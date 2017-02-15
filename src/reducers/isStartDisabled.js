@@ -5,8 +5,7 @@ const isStartDisabled = (state = false, action) => {
   case TOGGLE_START:
     return action.payload;
 
-  default:
-    return state;
+  default: return state;
   }
 };
 

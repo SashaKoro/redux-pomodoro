@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,6 +7,7 @@ import TimerButtons from './timerButtons';
 import TaskBreak from './task_break';
 import toastr from 'toastr';
 import {
+  tickTimeToggle,
   taskTimeToggle,
   breakTimeToggle,
   breakNextModifier,
@@ -49,14 +50,6 @@ class Pomodoro extends Component {
   constructor (props) {
     super (props);
 
-    this.state = {
-      tickTime: '0:02',
-      taskTime: 25,
-    //  breakTime: 5,
-    //  isBreakNext: true,
-    //  startDisabled: false,
-    };
-
     this.Timer = this.Timer.bind(this);
     this.startTheTimer = this.startTheTimer.bind(this);
     this.pauseTheTimer = this.pauseTheTimer.bind(this);
@@ -67,18 +60,16 @@ class Pomodoro extends Component {
 
   startTheTimer () {
     this.props.startToggler(true);
-    // this.setState({ startDisabled: true });
     this.LoopOfTime = setInterval(this.Timer, 1000);
   }
 
   pauseTheTimer () {
     this.props.startToggler(false);
-    // this.setState({ startDisabled: false });
     clearInterval(this.LoopOfTime);
   }
 
   Timer () {
-    let [minutes, seconds] = this.state.tickTime.split(':');
+    let [minutes, seconds] = this.props.tickTime.split(':');
     if (seconds !== '00') {
       seconds = (Number(seconds) - 1).toString();
       if (seconds.length === 1) {
@@ -93,16 +84,14 @@ class Pomodoro extends Component {
       minutes = this.props.breakTime;
       seconds = '00';
       this.props.breakNextModifier(false);
-      //this.setState({ isBreakNext: false });
     } else {
       this.playSound();
       toastr.success('Back to it!');
-      minutes = this.state.taskTime;
+      minutes = this.props.taskTime;
       seconds = '00';
       this.props.breakNextModifier(true);
-      //this.setState({ isBreakNext: true });
     }
-    this.setState({ tickTime: `${minutes}:${seconds}` });
+    this.props.tickTimeToggle(`${minutes}:${seconds}`);
   }
 
   playSound () {
@@ -111,16 +100,19 @@ class Pomodoro extends Component {
   }
 
   changeTaskTime (value) {
-    let newTaskTime = this.state.taskTime + value;
-    this.setState({ taskTime: newTaskTime });
-    if (this.props.isBreakNext) this.setState({ tickTime: `${newTaskTime.toString()}:00` });
+    let newTaskTime = this.props.taskTime + value;
+    this.props.taskTimeToggle(newTaskTime);
+    if (this.props.isBreakNext) {
+      this.props.tickTimeToggle(`${newTaskTime.toString()}:00`);
+    }
   }
 
   changeBreakTime (value) {
     let newBreakTime = this.props.breakTime + value;
     this.props.breakTimeToggle(newBreakTime);
-    //this.setState({ breakTime: newBreakTime });
-    if (!this.props.isBreakNext) this.setState({ tickTime: `${newBreakTime.toString()}:00` });
+    if (!this.props.isBreakNext) {
+      this.props.tickTimeToggle(`${newBreakTime.toString()}:00`);
+    }
   }
 
   render () {
@@ -130,7 +122,7 @@ class Pomodoro extends Component {
         <Tomato>
           <Name>Pomodoro</Name>
           <Display
-            displayOutput={this.state.tickTime}
+            displayOutput={this.props.tickTime}
           />
           <TimerButtons
             start={this.startTheTimer}
@@ -140,7 +132,7 @@ class Pomodoro extends Component {
         </Tomato>
         <Vine>
           <TaskBreak
-            taskTime={this.state.taskTime}
+            taskTime={this.props.taskTime}
             breakTime={this.props.breakTime}
             taskModify={this.changeTaskTime}
             breakModify={this.changeBreakTime}
@@ -153,14 +145,33 @@ class Pomodoro extends Component {
   }
 }
 
+Pomodoro.propTypes = {
+  tickTimeToggle: PropTypes.func.isRequired,
+  taskTimeToggle: PropTypes.func.isRequired,
+  breakTimeToggle: PropTypes.func.isRequired,
+  breakNextModifier: PropTypes.func.isRequired,
+  startToggler: PropTypes.func.isRequired,
+  tickTime: PropTypes.string.isRequired,
+  taskTime: PropTypes.number.isRequired,
+  breakTime: PropTypes.number.isRequired,
+  isBreakNext: PropTypes.bool.isRequired,
+  isStartDisabled: PropTypes.bool.isRequired,
+};
+
 /* eslint-disable func-style */
 
-function mapStateToProps ({ taskTime, breakTime, isBreakNext, isStartDisabled }) {
-  return { taskTime, breakTime, isBreakNext, isStartDisabled };
+function mapStateToProps ({ tickTime, taskTime, breakTime, isBreakNext, isStartDisabled }) {
+  return { tickTime, taskTime, breakTime, isBreakNext, isStartDisabled };
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ taskTimeToggle, breakTimeToggle, breakNextModifier, startToggler }, dispatch);
+  return bindActionCreators({
+    tickTimeToggle,
+    taskTimeToggle,
+    breakTimeToggle,
+    breakNextModifier,
+    startToggler,
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pomodoro);

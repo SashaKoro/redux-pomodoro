@@ -1,5 +1,10 @@
 import * as types from './actionTypes';
 
+export const tickTimeToggle = (action) => ({
+  type: types.TICK_TOGGLE,
+  payload: action,
+});
+
 export const taskTimeToggle = (action) => ({
   type: types.TASK_TOGGLE,
   payload: action,
