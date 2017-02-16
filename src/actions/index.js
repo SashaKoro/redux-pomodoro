@@ -1,26 +1,26 @@
 import * as types from './actionTypes';
 
-export const tickTimeToggle = (action) => ({
+export const tickTimeToggle = (newVal) => ({
   type: types.TICK_TOGGLE,
-  payload: action,
+  payload: newVal,
 });
 
-export const taskTimeToggle = (action) => ({
+export const taskTimeToggle = (newVal) => ({
   type: types.TASK_TOGGLE,
-  payload: action,
+  payload: newVal,
 });
 
-export const breakTimeToggle = (action) => ({
+export const breakTimeToggle = (newVal) => ({
   type: types.BREAK_TOGGLE,
-  payload: action,
+  payload: newVal,
 });
 
-export const breakNextModifier = (action) => ({
+export const breakNextModifier = (newBool) => ({
   type: types.BREAK_NEXT,
-  payload: action,
+  payload: newBool,
 });
 
-export const startToggler = (action) => ({
+export const startToggler = (newBool) => ({
   type: types.TOGGLE_START,
-  payload: action,
+  payload: newBool,
 });
