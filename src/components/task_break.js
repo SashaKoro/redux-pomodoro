@@ -54,13 +54,13 @@ const Output = styled.output`
   font-size: 32px;
 `;
 
-const Task_Break = ({ taskTime, breakTime, taskModify, breakModify, ifRunning }) => {
-  Task_Break.propTypes = {
-    taskTime: PropTypes.number,
-    breakTime: PropTypes.number,
-    taskModify: PropTypes.func,
-    breakModify: PropTypes.func,
-    ifRunning: PropTypes.bool,
+const TaskBreak = ({ taskTime, breakTime, taskModify, breakModify, ifRunning }) => {
+  TaskBreak.propTypes = {
+    taskTime: PropTypes.number.isRequired,
+    breakTime: PropTypes.number.isRequired,
+    taskModify: PropTypes.func.isRequired,
+    breakModify: PropTypes.func.isRequired,
+    ifRunning: PropTypes.bool.isRequired,
   };
 
   const subtractTask = () => (taskTime > 1) ? taskModify(-1) : taskModify(0);
@@ -73,7 +73,7 @@ const Task_Break = ({ taskTime, breakTime, taskModify, breakModify, ifRunning })
     <Div className="Task_Break">
         <P>Task</P>
       <Control>
-          <Button className="subtractTask" disabled={ifRunning} onClick={subtractTask}>-</Button>
+        <Button className="subtractTask" disabled={ifRunning} onClick={subtractTask}>-</Button>
         <Output className="taskDisplay">{taskTime}</Output>
         <PlusButton className="addTask" disabled={ifRunning} onClick={addTask}>+</PlusButton>
       </Control>
@@ -87,4 +87,4 @@ const Task_Break = ({ taskTime, breakTime, taskModify, breakModify, ifRunning })
   );
 };
 
-export default Task_Break;
+export default TaskBreak;
