@@ -35,9 +35,9 @@ const Pause = styled(Start)`
 
 const TimerButtons = ({ start, pause, ifRunning }) => {
   TimerButtons.propTypes = {
-    start: PropTypes.func,
-    pause: PropTypes.func,
-    ifRunning: PropTypes.bool,
+    start: PropTypes.func.isRequired,
+    pause: PropTypes.func.isRequired,
+    ifRunning: PropTypes.bool.isRequired,
   };
 
   const startTimer = () => start();

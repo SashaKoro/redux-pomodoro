@@ -15,7 +15,7 @@ const Div = styled.div`
 
 const Display = ({ displayOutput }) => {
   Display.propTypes = {
-    displayOutput: PropTypes.string,
+    displayOutput: PropTypes.string.isRequired,
   };
 
   return (
