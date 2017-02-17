@@ -46,7 +46,7 @@ const Ground = styled.div`
   border-radius: 120px 120px 5px 5px;
 `;
 
-class Pomodoro extends Component {
+export class Pomodoro extends Component {
   constructor (props) {
     super (props);
 
@@ -116,7 +116,6 @@ class Pomodoro extends Component {
   }
 
   render () {
-    console.log(this.props);
     return (
       <div className="Pomodoro">
         <Tomato>
