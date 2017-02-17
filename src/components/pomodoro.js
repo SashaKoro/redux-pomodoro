@@ -103,7 +103,7 @@ export class Pomodoro extends Component {
     let newTaskTime = this.props.taskTime + value;
     this.props.taskTimeToggle(newTaskTime);
     if (this.props.isBreakNext) {
-      this.props.tickTimeToggle(`${newTaskTime.toString()}:00`);
+      this.changeTickTime(newTaskTime);
     }
   }
 
@@ -111,8 +111,12 @@ export class Pomodoro extends Component {
     let newBreakTime = this.props.breakTime + value;
     this.props.breakTimeToggle(newBreakTime);
     if (!this.props.isBreakNext) {
-      this.props.tickTimeToggle(`${newBreakTime.toString()}:00`);
+      this.changeTickTime(newBreakTime);
     }
+  }
+
+  changeTickTime (newTime) {
+    this.props.tickTimeToggle(`${newTime.toString()}:00`);
   }
 
   render () {
